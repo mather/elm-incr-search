@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, div, input, button, ul, li)
+import Html exposing (Html, text, div, input, button, ul, li, strong)
 import Html.Attributes exposing (placeholder, value)
 import Html.Events exposing (onInput)
 
@@ -60,7 +60,7 @@ viewCandidateList word =
         w ->
             prefixMatchFilter w words
                 ++ infixMatchFilter w words
-                |> List.map (\s -> li [] [ text s ])
+                |> List.map (\s -> li [] <| emphasisWord w s)
                 |> ul []
 
 
@@ -73,6 +73,11 @@ infixMatchFilter : String -> List String -> List String
 infixMatchFilter word xs =
     List.filter (\s -> String.contains (String.toLower word) (String.dropLeft 1 s)) xs
 
+emphasisWord : String -> String -> List (Html Msg)
+emphasisWord target word =
+    String.split target word
+        |> List.map text
+        |> List.intersperse (strong [] [text target])
 
 
 ---- PROGRAM ----
