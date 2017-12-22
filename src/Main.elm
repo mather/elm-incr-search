@@ -59,6 +59,7 @@ viewCandidateList word =
 
         w ->
             prefixMatchFilter w words
+                ++ infixMatchFilter w words
                 |> List.map (\s -> li [] [ text s ])
                 |> ul []
 
@@ -66,6 +67,11 @@ viewCandidateList word =
 prefixMatchFilter : String -> List String -> List String
 prefixMatchFilter word xs =
     List.filter (\s -> String.startsWith (String.toLower word) s) xs
+
+
+infixMatchFilter : String -> List String -> List String
+infixMatchFilter word xs =
+    List.filter (\s -> String.contains (String.toLower word) (String.dropLeft 1 s)) xs
 
 
 
